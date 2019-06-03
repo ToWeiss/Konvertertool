@@ -20,8 +20,9 @@ public class Parser {
 		this.tokens = tokens;
 	}
 	
-	public void checkSyntax() throws SyntaxErrorException{
+	public int checkSyntax() {
 		
+		return -1;
 	}
 	
 	/**

@@ -5,20 +5,115 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-import weiss.csvp.*;
-import weiss.parser.*;
-import weiss.tokenizer.*;
-import weiss.functions.*;
+import weiss.csvp.CSVPColumn;
+import weiss.csvp.CSVPMeta;
+import weiss.functions.F_Splitten;
+import weiss.parser.Parser;
+import weiss.tokenizer.Token;
+import weiss.tokenizer.Tokenizer;
 
 public class Main {
+	public static CSVPMeta meta;
+	public static Parser parser;
+	public static String filename;
+	
 	public static void main (String[] args) throws IOException {
-		BufferedReader br = Files.newBufferedReader(Paths.get("/home/tobias/java-school/Konvertertool/test.csvp"));
+		Scanner sc = new Scanner(System.in);
+		String input, errorMsg = "", successMsg = "";
+		boolean repeat = true;
 		
-		StringBuilder s = new StringBuilder();
+		System.out.println("--------------------------------------------------------");
+		System.out.println("----------------- CSVP - Konvertertool -----------------");
+		System.out.println("--------------------------------------------------------");
+
+		System.out.println("- Datei oeffnen(1)");
+		System.out.println("- Datei anzeigen(2)");
+		System.out.println("- Datei filtern(3)");
+		System.out.println("- Datei splitten(4)");
+		System.out.println("- Datei validieren(5)");
+		System.out.println("- Programm schließen(6)\n");
 		
-		while(br.ready()) {
-			s.append((char) br.read());
+		while(repeat) {
+			System.out.print("- Wählen Sie die jewaehlige Zahl aus(h for help): ");
+			input = sc.nextLine();
+			
+			errorMsg = "";
+			successMsg = "";
+			
+			switch(input) {
+				case "1":
+					System.out.println("- Dateiname: ");
+					input = sc.nextLine();
+					
+					errorMsg = Main.openFile(input);
+					filename = input.substring(0,input.indexOf('.'));
+					successMsg = "Datei erfolgreich eingelesen.";
+					break;
+				case "2":
+					if(Main.meta != null) {
+						System.out.println(Main.meta.toString());
+						successMsg = filename + " erfolgreich angezeigt.";
+					}else {
+						errorMsg = "Öffnen Sie zuerst einen Datei.";
+					}
+					break;
+				case "3":
+
+					break;
+				case "4":
+					if(Main.meta != null) {
+						System.out.println("");
+						System.out.print("| ");
+						for(CSVPColumn curr : Main.meta.getSpalten()) {
+							System.out.print(curr.getName() + " | ");
+						}
+						System.out.println("\n");
+						System.out.println("Wählen Sie einen Spaltennamen aus: ");
+						input = sc.nextLine();
+						
+						errorMsg = Main.dateiSplitten(input);
+						successMsg = filename + " erfolgreich nach Spalte " + input + " getrennt.\n";
+					}else {
+						errorMsg = "Öffnen Sie zuerst einen Datei.";
+					}
+					break;
+				case "5":
+				
+					break;
+				case "6":
+					System.out.println("");
+					System.out.println("---------------- Konvertertool beendet -----------------");
+					return;
+				default:
+					errorMsg = "Ungueltige Eingabe";
+			}
+			
+			if(!errorMsg.equals("")) {
+				System.out.println("! " + errorMsg + "\n");
+			}else {
+				System.out.println("+ " + successMsg + "\n");
+			}
+		}
+		
+	
+		sc.close();
+	}
+	
+	public static String openFile(String filename) {
+		StringBuilder s;
+		
+		try {
+			BufferedReader br = Files.newBufferedReader(Paths.get(filename));
+			
+			s = new StringBuilder();
+			
+			while(br.ready()) {
+				s.append((char) br.read());
+			}
+		}catch(IOException ex) {
+			return "Leider gab es ein Problem beim Einlesen der Datei";
 		}
 		
 		Tokenizer tokenizer = new Tokenizer(s.toString());
@@ -31,23 +126,31 @@ public class Main {
 			tokens.add(curr);
 		}
 		
-		parser = new Parser(tokens);
-		try {
-			parser.checkSyntax();
-		}catch(SyntaxErrorException see) {
-			System.out.println("Syntax-Error");
+		Main.parser = new Parser(tokens);
+		
+		int syntaxcheck = Main.parser.checkSyntax();
+		
+		if(syntaxcheck > -1) {
+			return "Syntax-Fehler in Zeile " + syntaxcheck;
 		}
 		
-		CSVPMeta csvpmeta = parser.buildMeta();
-		parser.buildData();
+		Main.meta = Main.parser.buildMeta();
+		Main.parser.buildData();
 		
-		System.out.println(csvpmeta);
-		
+		return "";
+	}
+	
+	public static String dateiSplitten(String spaltenname) {
 		ArrayList<String> params = new ArrayList<>();
-		params.add("Klasse");
-		params.add("test");
-		F_Splitten f = new F_Splitten(params);
-		f.start(csvpmeta);
-		System.out.println(f.successfull());
+		params.add(spaltenname);
+		params.add(Main.filename);
+ 		F_Splitten split = new F_Splitten(params);
+		split.start(Main.meta);
+		
+		if(split.successfull()) {
+			return "";
+		}else {
+			return "Leider gab es ein Problem.";
+		}
 	}
 }
