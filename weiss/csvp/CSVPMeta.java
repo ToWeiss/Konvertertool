@@ -13,6 +13,7 @@ public class CSVPMeta {
 		this.spalten = new ArrayList<>();
 	}
 	
+
 	public CSVPMeta() {
 		this.spaltenanzahl = 0;
 		this.zeilenanzahl = 0;
@@ -32,11 +33,39 @@ public class CSVPMeta {
 	
 	@Override 
 	public String toString() {
+		int width = 60;
+		int widthColumn = width / spaltenanzahl;
+		int limit = 0;
+		
+		for(int i = 0; i < this.spaltenanzahl; i++) {
+			CSVPColumn column = this.spalten.get(i);
+			limit = (widthColumn - column.getName().length()) / 2;
+			for(int u = 0; u < limit; u++) {
+				System.out.print(" ");
+			}
+			System.out.print(column.getName());
+			for(int u = 0; u < limit; u++) {
+				System.out.print(" ");
+			}
+			System.out.print("|");
+		}
+		
+		System.out.println("");
+		
 		for(int i = 0; i < this.zeilenanzahl; i++) {
 			for(int u = 0; u < this.spaltenanzahl; u++) {
-				System.out.print(this.spalten.get(u).getData().get(i).getValue() + " | ");
+				CSVPObject currObj = this.spalten.get(u).getData().get(i);
+				limit = (widthColumn - currObj.getValue().length()) / 2;
+				for(int j = 0; j < limit; j++) {
+					System.out.print(" ");
+				}
+				System.out.print(currObj.getValue());
+				for(int j = 0; j < limit; j++) {
+					System.out.print(" ");
+				}
+				System.out.print("|");
 			}
-			System.out.println("\n");
+			System.out.println("");
 		}
 		return "";
 	}

@@ -48,14 +48,26 @@ public class Parser {
 			}
 		}
 		
+		String max = "";
+		String min = "";
+		
 		for(int i = newline+1; i < (newline*2)+2; i++) {
 			Token curr = tokens.get(i);
 			if(curr.getTokentype() == TokenTypeEnum.DECLARATION){
 				CSVPTypeEnum type = null;
-				if(curr.getValue().contains("GANZZAHL")) {
-					type = CSVPTypeEnum.GANZZAHL;
-				}else if(curr.getValue().contains("TEXT")) {
-					type = CSVPTypeEnum.TEXT;
+				if(curr.getValue().contains("GANZZAHL") || curr.getValue().contains("TEXT")) {
+					if(curr.getValue().contains("GANZZAHL")) {
+						type = CSVPTypeEnum.GANZZAHL;
+					}else if(curr.getValue().contains("TEXT")) {
+						type = CSVPTypeEnum.TEXT;
+					}
+					
+					String value = curr.getValue();
+					min = value.substring(value.indexOf('(')+1, value.indexOf(','));
+					max = value.substring(value.indexOf(',')+1, value.indexOf(')'));
+					
+					type.setMin(Integer.parseInt(min));
+					type.setMax(Integer.parseInt(max));
 				}
 				columntypes.add(type);
 			}
@@ -84,6 +96,7 @@ public class Parser {
 			
 			if(curr.getTokentype() != TokenTypeEnum.OPERATOR && curr.getTokentype() != TokenTypeEnum.NEWLINE) {
 				CSVPObject data = new CSVPObject(curr.getValue(), rownumber);
+				data.setColumn(currColumn);
 				currColumn.addData(data);
 			}
 			

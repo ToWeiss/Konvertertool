@@ -7,10 +7,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import weiss.csvp.*;
-import weiss.parser.Parser;
-import weiss.parser.SyntaxErrorException;
-import weiss.tokenizer.Token;
-import weiss.tokenizer.Tokenizer;
+import weiss.parser.*;
+import weiss.tokenizer.*;
+import weiss.functions.*;
 
 public class Main {
 	public static void main (String[] args) throws IOException {
@@ -43,5 +42,12 @@ public class Main {
 		parser.buildData();
 		
 		System.out.println(csvpmeta);
+		
+		ArrayList<String> params = new ArrayList<>();
+		params.add("Klasse");
+		params.add("test");
+		F_Splitten f = new F_Splitten(params);
+		f.start(csvpmeta);
+		System.out.println(f.successfull());
 	}
 }
