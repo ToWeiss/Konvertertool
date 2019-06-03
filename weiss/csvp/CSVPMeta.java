@@ -32,7 +32,12 @@ public class CSVPMeta {
 	
 	@Override 
 	public String toString() {
-		
+		for(int i = 0; i < this.zeilenanzahl; i++) {
+			for(int u = 0; u < this.spaltenanzahl; u++) {
+				System.out.print(this.spalten.get(u).getData().get(i).getValue() + " | ");
+			}
+			System.out.println("\n");
+		}
 		return "";
 	}
 	

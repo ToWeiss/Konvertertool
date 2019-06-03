@@ -96,5 +96,6 @@ public class Parser {
 				columnpos = 0;
 			}
 		}
+		this.meta.setZeilenanzahl(rownumber);
 	}
 }

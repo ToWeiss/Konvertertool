@@ -42,10 +42,6 @@ public class Main {
 		CSVPMeta csvpmeta = parser.buildMeta();
 		parser.buildData();
 		
-		for(CSVPColumn curr : csvpmeta.getSpalten()) {
-			for(CSVPObject curr2 : curr.getData()) {
-				System.out.println(curr2.getRownumber() + ":" + curr2.getValue());
-			}
-		}
+		System.out.println(csvpmeta);
 	}
 }
