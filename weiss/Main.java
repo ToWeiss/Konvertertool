@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
+import weiss.csvp.*;
+import weiss.parser.Parser;
+import weiss.parser.SyntaxErrorException;
 import weiss.tokenizer.Token;
 import weiss.tokenizer.Tokenizer;
 
@@ -18,11 +22,30 @@ public class Main {
 			s.append((char) br.read());
 		}
 		
-		Tokenizer tn = new Tokenizer(s.toString());
+		Tokenizer tokenizer = new Tokenizer(s.toString());
+		Parser parser;
 		
-		while(tn.hasToken()) {
-			Token curr = tn.getToken();
-			System.out.println(curr.getValue() + " : " + curr.getTokentype());
+		ArrayList<Token> tokens = new ArrayList<>();
+		
+		while(tokenizer.hasToken()) {
+			Token curr = tokenizer.getToken();
+			tokens.add(curr);
+		}
+		
+		parser = new Parser(tokens);
+		try {
+			parser.checkSyntax();
+		}catch(SyntaxErrorException see) {
+			System.out.println("Syntax-Error");
+		}
+		
+		CSVPMeta csvpmeta = parser.buildMeta();
+		parser.buildData();
+		
+		for(CSVPColumn curr : csvpmeta.getSpalten()) {
+			for(CSVPObject curr2 : curr.getData()) {
+				System.out.println(curr2.getRownumber() + ":" + curr2.getValue());
+			}
 		}
 	}
 }

@@ -4,8 +4,6 @@ public class Tokenizer {
 	private String text;
 	private int pos;
 	
-	private boolean prevWasEmpty = false;
-	
 	public Tokenizer(String text) {
 		this.text = text;
 	}
@@ -14,18 +12,29 @@ public class Tokenizer {
 		TokenTypeEnum type = TokenTypeEnum.UNKOWN;
 		Token current = new Token(type, "");
 		
+		boolean isString = false;
+		int startPos = pos;
+		
+		if(this.text.charAt(pos) == '\"') {
+			isString = true;
+		}
+		
 		String value = "";
 		while(this.hasToken()) {
 			char curChar = this.text.charAt(pos);
 			
-			if(curChar == ';') {
+			if(curChar == ';' && !isString) {
 				if(value.equals("")) {					
 					value = ";";
 					pos++;
 				}
 				break;
 			}
-
+			
+			if(startPos != pos && this.text.charAt(pos) == '\"') {
+				isString = false;
+			}
+			
 			if(curChar == '\n') {
 				if(value.equals("")) {
 					value = "\n";
