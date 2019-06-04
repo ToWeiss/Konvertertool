@@ -9,11 +9,18 @@ import java.util.Scanner;
 
 import weiss.csvp.CSVPColumn;
 import weiss.csvp.CSVPMeta;
+import weiss.functions.F_Filtern;
 import weiss.functions.F_Splitten;
 import weiss.parser.Parser;
 import weiss.tokenizer.Token;
 import weiss.tokenizer.Tokenizer;
 
+/**
+ * Main-Klasse. Kümmert sich um die Darstellung (CLI), um die Ausführung der richtigen Funktionen
+ * Einlesen der Dateien und ausgeben von Informationen
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public class Main {
 	public static CSVPMeta meta;
 	public static Parser parser;
@@ -28,12 +35,7 @@ public class Main {
 		System.out.println("----------------- CSVP - Konvertertool -----------------");
 		System.out.println("--------------------------------------------------------");
 
-		System.out.println("- Datei oeffnen(1)");
-		System.out.println("- Datei anzeigen(2)");
-		System.out.println("- Datei filtern(3)");
-		System.out.println("- Datei splitten(4)");
-		System.out.println("- Datei validieren(5)");
-		System.out.println("- Programm schließen(6)\n");
+		Main.printMenu();
 		
 		while(repeat) {
 			System.out.print("- Wählen Sie die jewaehlige Zahl aus(h for help): ");
@@ -60,7 +62,28 @@ public class Main {
 					}
 					break;
 				case "3":
-
+					if(Main.meta != null) {
+						ArrayList<String> temp = new ArrayList<>();
+						
+						System.out.println("");
+						System.out.print("| ");
+						for(CSVPColumn curr : Main.meta.getSpalten()) {
+							System.out.print(curr.getName() + " | ");
+						}
+						System.out.println("\n");
+						System.out.println("Wählen Sie einen Spaltennamen aus: ");
+						input = sc.nextLine();
+						
+						temp.add(input);
+						System.out.println("Geben Sie ein Suchwort ein: ");
+						input = sc.nextLine();
+						temp.add(input);
+						
+						errorMsg = Main.dateiFiltern(temp.get(0), Main.filename, temp.get(1));
+						successMsg = filename + " erfolgreich nach Spalte " + temp.get(0) + " und dem Suchwort \"" + temp.get(1) + "\" gefiltert";
+					}else {
+						errorMsg = "Öffnen Sie zuerst eine Datei.";
+					}
 					break;
 				case "4":
 					if(Main.meta != null) {
@@ -86,6 +109,10 @@ public class Main {
 					System.out.println("");
 					System.out.println("---------------- Konvertertool beendet -----------------");
 					return;
+				case "h":
+					System.out.println("");
+					Main.printMenu();
+					break;
 				default:
 					errorMsg = "Ungueltige Eingabe";
 			}
@@ -152,5 +179,30 @@ public class Main {
 		}else {
 			return "Leider gab es ein Problem.";
 		}
+	}
+	
+	public static String dateiFiltern(String spaltenname, String filename, String suchkriterium) {
+		ArrayList<String> params = new ArrayList<>();
+		params.add(spaltenname);
+		params.add(filename);
+		params.add(suchkriterium);
+		
+		F_Filtern filter = new F_Filtern(params);
+		filter.start(Main.meta);
+		
+		if(filter.successfull()) {
+			return "";
+		}else {
+			return "Leider gab es ein Problem.";
+		}
+	}
+	
+	public static void printMenu() {
+		System.out.println("- Datei oeffnen(1)");
+		System.out.println("- Datei anzeigen(2)");
+		System.out.println("- Datei filtern(3)");
+		System.out.println("- Datei splitten(4)");
+		System.out.println("- Datei validieren(5)");
+		System.out.println("- Programm schließen(6)\n");
 	}
 }
