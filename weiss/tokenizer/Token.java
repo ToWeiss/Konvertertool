@@ -1,5 +1,10 @@
 package weiss.tokenizer;
 
+/**
+ * Stellt einen Token dar. Token-Typen siehe TokenTypeEnum
+ * @author tweiss
+ * @version 2019-06-04s
+ */
 public class Token {
 	private TokenTypeEnum tokentype;
 	private String value;

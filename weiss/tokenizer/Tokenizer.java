@@ -1,5 +1,10 @@
 package weiss.tokenizer;
 
+/**
+ * Nimmt einen String als Attribut und teilt diesen in Token ein
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public class Tokenizer {
 	private String text;
 	private int pos;

@@ -2,6 +2,12 @@ package weiss.csvp;
 
 import java.util.ArrayList;
 
+/**
+ * Stellt quasi die CSVP-Datei selber dar. Speichert Daten wie Spaltennamen, die Spalten selber ....
+ * @author tweiss
+ * @version 2019-06-04
+ *
+ */
 public class CSVPMeta {
 	private int spaltenanzahl;
 	private int zeilenanzahl;

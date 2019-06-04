@@ -1,5 +1,10 @@
 package weiss.csvp;
 
+/**
+ * Stellt einen CSVPType dar. Jeder möglicher Datentyp eines Feldes in der CSVP-Datei sind hier definiert.
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public enum CSVPTypeEnum {
 	TEXT(0,0),
 	GANZZAHL(0,0);

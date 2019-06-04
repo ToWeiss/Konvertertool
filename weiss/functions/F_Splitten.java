@@ -16,13 +16,19 @@ import weiss.csvp.CSVPMeta;
 import weiss.csvp.CSVPObject;
 
 /**
- * 
- * @author tobias
- * expected Parameters:
- * 	- spaltennamen
- *  - dateiname
+ * Implementiert die Funktion "Splitten nach Spalte"
+ * Nimmt eine CSVP-Datei und spaltet diese, nach einer bestimmten Spalte. Unterschiedliche Werte in 
+ * dieser Spalte werden in eine eigene Datei gespeichert
+ * @author tweiss
  */
 public class F_Splitten extends FunktionAbstract{
+	/**
+	 * Konstruktor
+	 * @param parameters:
+	 * 	expected:
+	 * 		Spaltenname [0]
+	 * 		Dateiname [1]
+	 */
 	public F_Splitten(ArrayList<String> parameters) {
 		super(parameters);
 	}
@@ -133,14 +139,9 @@ public class F_Splitten extends FunktionAbstract{
 				
 				bwriter.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 				this.setError(true);
 				return;
 			}
 		}
-	}
-	@Override
-	public boolean successfull() {
-		return !this.isError();
 	}
 }

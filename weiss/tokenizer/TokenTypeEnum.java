@@ -1,5 +1,10 @@
 package weiss.tokenizer;
 
+/**
+ * TokenTypeEnum. Stellt die verschiedenen Arten von möglichen Tokens in einer CSVP-Datei dar
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public enum TokenTypeEnum {
 	DECLARATION(0),
 	OPERATOR(1),

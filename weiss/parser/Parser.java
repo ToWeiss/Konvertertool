@@ -9,6 +9,11 @@ import weiss.csvp.CSVPTypeEnum;
 import weiss.tokenizer.Token;
 import weiss.tokenizer.TokenTypeEnum;
 
+/**
+ * Token-Parser, nimmt Tokens und wandelt diese in CSVPMeta,CSVPColumn und CSVPObject - Objekte um
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public class Parser {
 	private ArrayList<Token> tokens;
 	private CSVPMeta meta;

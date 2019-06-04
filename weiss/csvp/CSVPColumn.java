@@ -2,6 +2,11 @@ package weiss.csvp;
 
 import java.util.ArrayList;
 
+/**
+ * Stellt eine Spalte in der CSVP-Datei dar. Jede Spalte ist einem CSVPMeta Objekt zugewiesen
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public class CSVPColumn {
 	private CSVPTypeEnum datatype;
 	private ArrayList<CSVPObject> data;

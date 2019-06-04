@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import weiss.csvp.CSVPMeta;
 
+/**
+ * Abstrakte Klasse zur Definition von Methoden für Funktionen des Programms (Splitten, Filtern...)
+ * @author tweiss
+ * @version 2019-06-04
+ */
 abstract class FunktionAbstract {
 	private ArrayList<String> parameters;
 	private boolean error;
@@ -13,7 +18,10 @@ abstract class FunktionAbstract {
 	}
 	
 	abstract void start(CSVPMeta meta);
-	abstract boolean successfull();
+	
+	public boolean successfull() {
+		return !this.isError();
+	}
 	
 	public ArrayList<String> getParameters() {
 		return parameters;

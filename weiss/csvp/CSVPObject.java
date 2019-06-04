@@ -1,5 +1,12 @@
 package weiss.csvp;
 
+/**
+ * Stellt ein Datenfeld in der CSVP-Datei dar.
+ * Jedes CSVPObject ist einem CSVPColumn, also einer Spalte, zugewiesen.
+ * Reihenstelle wird durch einen einfachen Integer dargestellt
+ * @author tweiss
+ * @version 2019-06-04
+ */
 public class CSVPObject {
 	private String value;
 	private CSVPColumn column;
